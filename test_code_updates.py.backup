@@ -20,8 +20,8 @@ class TestCodeUpdates(unittest.TestCase):
     def test_deprecated_numpy_usage(self):
         """Test code that uses deprecated numpy dtypes"""
         
-        arr1 = np.array([1, 2, 3], dtype=int)   
-        arr2 = np.array([1.0, 2.0, 3.0], dtype=float) 
+        arr1 = np.array([1, 2, 3], dtype=np.int)   
+        arr2 = np.array([1.0, 2.0, 3.0], dtype=np.float) 
         
         result = process_arrays(arr1, arr2)
         self.assertEqual(len(result), 3)
