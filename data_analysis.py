@@ -1,0 +1,51 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.externals.joblib import load, dump 
+import seaborn as sns
+
+class DataAnalyzer:
+    def __init__(self):
+        self.results = {}
+    
+    def analyze_dataset(self, df):
+        """Analyze dataset with deprecated methods"""
+        
+        numeric_data = df.select_dtypes(include=[np.int, np.float, np.number])
+        text_data = df.select_dtypes(include=[np.str, np.object])
+        bool_data = df.select_dtypes(include=[np.bool])
+        
+        summary = pd.DataFrame()
+        for col in numeric_data.columns:
+            col_summary = pd.DataFrame({
+                'column': [col],
+                'mean': [numeric_data[col].mean()],
+                'std': [numeric_data[col].std()]
+            })
+            summary = summary.append(col_summary, ignore_index=True)
+        
+        # More deprecated numpy usage
+        correlation_matrix = numeric_data.corr().values.astype(np.float)
+        
+        self.results = {
+            'summary': summary,
+            'correlation': correlation_matrix,
+            'dtypes': {
+                'numeric_count': len(numeric_data.columns),
+                'text_count': len(text_data.columns), 
+                'bool_count': len(bool_data.columns)
+            }
+        }
+        
+        return self.results
+    
+    def create_report(self):
+        """Generate analysis report"""
+        report_data = []
+        
+        for key, value in self.results.items():
+            if isinstance(value, pd.DataFrame):
+                report_row = pd.DataFrame({'metric': [key], 'type': ['dataframe']})
+                report_data.append(report_row) if not report_data else report_data[0].append(report_row)
+        
+        return report_data
