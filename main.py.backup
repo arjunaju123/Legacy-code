@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-import joblib  
-# Removed - sklearn.utils.testing has been deprecated and removed. Use pytest or numpy.testing instead.     
+from sklearn.externals import joblib  
+from sklearn.utils import testing     
 import matplotlib.pyplot as plt
 
 class DataProcessor:
@@ -12,9 +12,9 @@ class DataProcessor:
         """Load CSV data with outdated pandas methods"""
         
         dtype_map = {
-            'id': pd.Int64Dtype(),  
-            'score': float,          
-            'category': str,         
+            'id': pandas.Int64Dtype(),  
+            'score': np.float,          
+            'category': np.str,         
             'is_active': np.bool        
         }
         
@@ -29,9 +29,9 @@ class DataProcessor:
         new_row = pd.DataFrame({'id': [999], 'score': [100.0], 'category': ['test'], 'is_active': [True]})
         self.data = self.data.append(new_row, ignore_index=True)
         
-        numeric_cols = self.data.select_dtypes(include=[np.int, float]).columns
+        numeric_cols = self.data.select_dtypes(include=[np.int, np.float]).columns
         
-        self.data['processed_score'] = self.data['score'].astype(float64)
+        self.data['processed_score'] = self.data['score'].astype(np.float64)
         
         return self.data
     
@@ -41,9 +41,9 @@ class DataProcessor:
         
     def run_tests(self):
         """Run tests using deprecated testing module"""
-        from numpy.testing import assert_array_equal
+        from sklearn.utils.testing import assert_array_equal
         
-        test_array = np.array([1, 2, 3], dtype=int) 
+        test_array = np.array([1, 2, 3], dtype=np.int) 
         expected = np.array([1, 2, 3], dtype=np.int64)
         
         assert_array_equal(test_array, expected)
