@@ -21,7 +21,7 @@ def create_sample_data(n_samples=1000):
 def process_arrays(arr1, arr2):
     """Process numpy arrays with deprecated dtypes"""
     
-    arr1_proc = np.array(arr1, dtype=float)  # Should be float
+    arr1_proc = np.array(arr1, dtype=np.float)  # Should be float
     arr2_proc = np.array(arr2, dtype=np.int)    # Should be int
     
     result = arr1_proc + arr2_proc.astype(np.float)
