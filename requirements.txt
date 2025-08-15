@@ -8,3 +8,13 @@ ml_model==0.0.1
 sklearn==0.0.post12
 unittest==0.0
 utils==1.0.2
+data_analysis==1.1.43
+joblib==1.5.1
+matplotlib==3.10.5
+ml_model==0.0.1
+numpy==2.3.2
+pandas==2.3.1
+seaborn==0.13.2
+sklearn==0.0.post12
+unittest==0.0
+utils==1.0.2
