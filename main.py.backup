@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-import joblib  
-# 'testing' has been removed in recent scikit-learn releases. Remove or replace.     
+from sklearn.externals import joblib  
+from sklearn.utils import testing     
 import matplotlib.pyplot as plt
 
 class DataProcessor:
@@ -13,8 +13,8 @@ class DataProcessor:
         
         dtype_map = {
             'id': pandas.Int64Dtype(),  
-            'score': float,          
-            'category': str,         
+            'score': np.float,          
+            'category': np.str,         
             'is_active': np.bool        
         }
         
@@ -41,9 +41,9 @@ class DataProcessor:
         
     def run_tests(self):
         """Run tests using deprecated testing module"""
-        from numpy.testing import assert_array_equal
+        from sklearn.utils.testing import assert_array_equal
         
-        test_array = np.array([1, 2, 3], dtype=int) 
-        expected = np.array([1, 2, 3], dtype=int)
+        test_array = np.array([1, 2, 3], dtype=np.int) 
+        expected = np.array([1, 2, 3], dtype=np.int64)
         
         assert_array_equal(test_array, expected)

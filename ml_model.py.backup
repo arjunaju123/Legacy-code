@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-import joblib
-# Use from numpy.testing or redesign test. The sklearn.utils.testing module has been removed.
-from numpy.testing import assert_array_almost_equal
+from sklearn.externals import joblib
+from sklearn.utils.testing import assert_greater
+from sklearn.utils.testing import assert_array_almost_equal
 import pickle
 
 class MLModel:
@@ -34,7 +34,7 @@ class MLModel:
         
         predictions = self.model.predict(X_prep)
         
-        from numpy.testing import assert_array_less
+        from sklearn.utils.testing import assert_array_less
         
         mse = np.mean((predictions - y_prep) ** 2)
         assert_greater(1000, mse)  
@@ -44,14 +44,14 @@ class MLModel:
     def save_model(self, filepath):
         """Save model using deprecated joblib import"""
         if self.trained:
-            from joblib import dump
+            from sklearn.externals.joblib import dump
             dump(self.model, filepath)
         else:
             raise ValueError("Model must be trained before saving")
     
     def load_model(self, filepath):
         """Load model using deprecated joblib import"""  
-        from joblib import load
+        from sklearn.externals.joblib import load
         self.model = load(filepath)
         self.trained = True
         return self.model
