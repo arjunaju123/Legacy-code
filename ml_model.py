@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import joblib
-from sklearn.utils._testing import assert_greater
-from sklearn.utils._testing import assert_array_almost_equal
+from sklearn.utils._testing import assert_greater # Note: _testing utilities are private and subject to removal. Prefer using 'from sklearn.utils._param_validation import assert_greater' or standard 'assert' if 'assert_greater' is removed.
+from numpy.testing import assert_array_almost_equal # Use numpy's version as sklearn's internal test utilities are removed.
 import pickle
 
 class MLModel:
@@ -34,7 +34,7 @@ class MLModel:
         
         predictions = self.model.predict(X_prep)
         
-        from sklearn.utils._testing import assert_array_less
+        from numpy.testing import assert_array_less # Use numpy's version. sklearn's own assert_array_less in _testing is now removed.
         
         mse = np.mean((predictions - y_prep) ** 2)
         assert_greater(1000, mse)  

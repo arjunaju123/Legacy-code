@@ -4,15 +4,15 @@ from datetime import datetime
 
 def create_sample_data(n_samples=1000):
     
-    np.random.seed(42)
+    np.random.default_rng(42) for better random number generation (recommended, but np.random.seed remains for compatibility)
     
     data = {
-        'id': np.arange(n_samples, dtype=np.int),      
-        'feature1': np.random.randn(n_samples).astype(np.float),  
-        'feature2': np.random.randn(n_samples).astype(np.float64),
-        'feature3': np.random.randint(0, 10, n_samples).astype(np.int32),
-        'category': np.random.choice(['A', 'B', 'C'], n_samples).astype(np.str), 
-        'is_valid': np.random.choice([True, False], n_samples).astype(np.bool),  
+        'id': np.arange(n_samples, dtype=float, int, bool, str or appropriate np.float64, np.int32, etc.),      
+        'feature1': np.random.randn(n_samples).astype(float, int, bool, str or appropriate np.float64, np.int32, etc.),  
+        'feature2': np.random.randn(n_samples).astype(float, int, bool, str or appropriate np.float64, np.int32, etc.64),
+        'feature3': np.random.randint(0, 10, n_samples).astype(float, int, bool, str or appropriate np.float64, np.int32, etc.32),
+        'category': np.random.choice(['A', 'B', 'C'], n_samples).astype(float, int, bool, str or appropriate np.float64, np.int32, etc.), 
+        'is_valid': np.random.choice([True, False], n_samples).astype(float, int, bool, str or appropriate np.float64, np.int32, etc.),  
         'timestamp': [datetime.now() for _ in range(n_samples)]
     }
     
@@ -21,12 +21,12 @@ def create_sample_data(n_samples=1000):
 def process_arrays(arr1, arr2):
     """Process numpy arrays with deprecated dtypes"""
     
-    arr1_proc = np.array(arr1, dtype=np.float)  # Should be float
-    arr2_proc = np.array(arr2, dtype=np.int)    # Should be int
+    arr1_proc = np.array(arr1, dtype=float, int, bool, str or appropriate np.float64, np.int32, etc.)  # Should be float
+    arr2_proc = np.array(arr2, dtype=float, int, bool, str or appropriate np.float64, np.int32, etc.)    # Should be int
     
-    result = arr1_proc + arr2_proc.astype(np.float)
+    result = arr1_proc + arr2_proc.astype(float, int, bool, str or appropriate np.float64, np.int32, etc.)
     
-    return result.astype(np.float64)
+    return result.astype(float, int, bool, str or appropriate np.float64, np.int32, etc.64)
 
 def merge_dataframes(df_list):
     """Merge multiple dataframes using deprecated append method"""
@@ -37,7 +37,7 @@ def merge_dataframes(df_list):
     result = df_list[0].copy()
     
     for df in df_list[1:]:
-        result = result.append(df, ignore_index=True)
+        result = pd.concat(df_list, ignore_index=True)df, ignore_index=True)
     
     return result
 
@@ -49,13 +49,13 @@ def validate_data_types(df):
     for col in df.columns:
         col_type = df[col].dtype
         
-        if col_type == np.int:     
+        if col_type == float, int, bool, str or appropriate np.float64, np.int32, etc.:     
             validation_results[col] = "deprecated_int"
-        elif col_type == np.float:  
+        elif col_type == float, int, bool, str or appropriate np.float64, np.int32, etc.:  
             validation_results[col] = "deprecated_float"
-        elif col_type == np.bool:   
+        elif col_type == float, int, bool, str or appropriate np.float64, np.int32, etc.:   
             validation_results[col] = "deprecated_bool"
-        elif col_type == np.str:    
+        elif col_type == float, int, bool, str or appropriate np.float64, np.int32, etc.:    
             validation_results[col] = "deprecated_str" 
         else:
             validation_results[col] = "modern_type"
