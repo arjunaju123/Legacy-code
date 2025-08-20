@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-import joblib
+from sklearn.externals import joblib
 from sklearn.utils.testing import assert_greater
 from sklearn.utils.testing import assert_array_almost_equal
 import pickle
@@ -14,13 +14,13 @@ class MLModel:
     def prepare_data(self, X, y):
         """Prepare training data with deprecated types"""
         
-        X_processed = X.astype(float)  # Should be float
-        y_processed = y.astype(float)  # Should be float
+        X_processed = X.astype(np.float)  # Should be float
+        y_processed = y.astype(np.float)  # Should be float
         
         if isinstance(X_processed, pd.DataFrame):
             for col in X_processed.columns:
                 if X_processed[col].dtype == 'object':
-                    X_processed[col] = X_processed[col].astype(str)
+                    X_processed[col] = X_processed[col].astype(np.str)
         
         return X_processed, y_processed
     
@@ -44,14 +44,14 @@ class MLModel:
     def save_model(self, filepath):
         """Save model using deprecated joblib import"""
         if self.trained:
-            from joblib import dump
+            from sklearn.externals.joblib import dump
             dump(self.model, filepath)
         else:
             raise ValueError("Model must be trained before saving")
     
     def load_model(self, filepath):
         """Load model using deprecated joblib import"""  
-        from joblib import load
+        from sklearn.externals.joblib import load
         self.model = load(filepath)
         self.trained = True
         return self.model

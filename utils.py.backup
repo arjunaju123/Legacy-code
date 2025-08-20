@@ -7,12 +7,12 @@ def create_sample_data(n_samples=1000):
     np.random.seed(42)
     
     data = {
-        'id': np.arange(n_samples, dtype=int),      
-        'feature1': np.random.randn(n_samples).astype(float),  
+        'id': np.arange(n_samples, dtype=np.int),      
+        'feature1': np.random.randn(n_samples).astype(np.float),  
         'feature2': np.random.randn(n_samples).astype(np.float64),
         'feature3': np.random.randint(0, 10, n_samples).astype(np.int32),
-        'category': np.random.choice(['A', 'B', 'C'], n_samples).astype(str), 
-        'is_valid': np.random.choice([True, False], n_samples).astype(bool),  
+        'category': np.random.choice(['A', 'B', 'C'], n_samples).astype(np.str), 
+        'is_valid': np.random.choice([True, False], n_samples).astype(np.bool),  
         'timestamp': [datetime.now() for _ in range(n_samples)]
     }
     
