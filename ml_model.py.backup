@@ -1,10 +1,9 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-import joblib  # joblib is no longer provided via sklearn.externals; install joblib directly if needed
-from numpy.testing import assert_  # Use numpy.testing or your own assertion logic instead
-# assert_greater is removed from sklearn.utils.testing. You can use 'assert 1000 > mse' instead.
-from numpy.testing import assert_array_almost_equal  # Use numpy.testing instead
+from sklearn.externals import joblib
+from sklearn.utils.testing import assert_greater
+from sklearn.utils.testing import assert_array_almost_equal
 import pickle
 
 class MLModel:
@@ -15,13 +14,13 @@ class MLModel:
     def prepare_data(self, X, y):
         """Prepare training data with deprecated types"""
         
-        X_processed = X.astype(float)  # np.float is deprecated since NumPy 1.20; use native float  # Should be float
-        y_processed = y.astype(float)  # np.float is deprecated since NumPy 1.20; use native float  # Should be float
+        X_processed = X.astype(np.float)  # Should be float
+        y_processed = y.astype(np.float)  # Should be float
         
         if isinstance(X_processed, pd.DataFrame):
             for col in X_processed.columns:
                 if X_processed[col].dtype == 'object':
-                    X_processed[col] = X_processed[col].astype(str)  # np.str is deprecated since NumPy 1.20; use native str
+                    X_processed[col] = X_processed[col].astype(np.str)
         
         return X_processed, y_processed
     
@@ -35,24 +34,24 @@ class MLModel:
         
         predictions = self.model.predict(X_prep)
         
-        from numpy.testing import assert_array_less  # Use numpy.testing instead
+        from sklearn.utils.testing import assert_array_less
         
         mse = np.mean((predictions - y_prep) ** 2)
-        assert 1000 > mse  # Replace with Python's standard assertion for greater than  
+        assert_greater(1000, mse)  
         
         return self.model
     
     def save_model(self, filepath):
         """Save model using deprecated joblib import"""
         if self.trained:
-            from joblib import dump  # joblib is now an external dependency; update import path
+            from sklearn.externals.joblib import dump
             dump(self.model, filepath)
         else:
             raise ValueError("Model must be trained before saving")
     
     def load_model(self, filepath):
         """Load model using deprecated joblib import"""  
-        from joblib import load  # joblib is now an external dependency; update import path
+        from sklearn.externals.joblib import load
         self.model = load(filepath)
         self.trained = True
         return self.model

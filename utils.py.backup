@@ -37,10 +37,7 @@ def merge_dataframes(df_list):
     result = df_list[0].copy()
     
     for df in df_list[1:]:
-        result = result = df_list[0].copy()
-for df in df_list[1:]:
-    result = pd.concat([result, df], ignore_index=True)
-# The DataFrame.append method is REMOVED after pandas 2.0; use pd.concat insteaddf, ignore_index=True)
+        result = result.append(df, ignore_index=True)
     
     return result
 
