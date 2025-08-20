@@ -1,0 +1,49 @@
+import pandas as pd
+import numpy as np
+from sklearn.externals import joblib  
+from sklearn.utils import testing     
+import matplotlib.pyplot as plt
+
+class DataProcessor:
+    def __init__(self):
+        self.data = None
+        
+    def load_data(self, file_path):
+        """Load CSV data with outdated pandas methods"""
+        
+        dtype_map = {
+            'id': pandas.Int64Dtype(),  
+            'score': np.float,          
+            'category': np.str,         
+            'is_active': np.bool        
+        }
+        
+        self.data = pd.read_csv(file_path, dtype=dtype_map)
+        return self.data
+    
+    def process_data(self):
+        """Process data with outdated methods"""
+        if self.data is None:
+            return None
+            
+        new_row = pd.DataFrame({'id': [999], 'score': [100.0], 'category': ['test'], 'is_active': [True]})
+        self.data = self.data.append(new_row, ignore_index=True)
+        
+        numeric_cols = self.data.select_dtypes(include=[np.int, np.float]).columns
+        
+        self.data['processed_score'] = self.data['score'].astype(np.float64)
+        
+        return self.data
+    
+    def save_model(self, model, filename):
+        """Save model using deprecated joblib import"""
+        joblib.dump(model, filename)
+        
+    def run_tests(self):
+        """Run tests using deprecated testing module"""
+        from sklearn.utils.testing import assert_array_equal
+        
+        test_array = np.array([1, 2, 3], dtype=np.int) 
+        expected = np.array([1, 2, 3], dtype=np.int64)
+        
+        assert_array_equal(test_array, expected)

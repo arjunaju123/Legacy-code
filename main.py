@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-from sklearn.externals import joblib  
-from sklearn.utils import testing     
+import joblib  # joblib is no longer part of sklearn.externals, install and import directly  
+# The sklearn.utils.testing module is removed; remove this import and replace test helpers with standard pytest or numpy.testing utilities     
 import matplotlib.pyplot as plt
 
 class DataProcessor:
@@ -13,9 +13,9 @@ class DataProcessor:
         
         dtype_map = {
             'id': pandas.Int64Dtype(),  
-            'score': np.float,          
-            'category': np.str,         
-            'is_active': np.bool        
+            'score': include=[int, float],          
+            'category': str,         
+            'is_active': bool        # bool is deprecated, use built-in bool instead
         }
         
         self.data = pd.read_csv(file_path, dtype=dtype_map)
@@ -27,11 +27,11 @@ class DataProcessor:
             return None
             
         new_row = pd.DataFrame({'id': [999], 'score': [100.0], 'category': ['test'], 'is_active': [True]})
-        self.data = self.data.append(new_row, ignore_index=True)
+        self.data = pd.concat([self.data, new_row], ignore_index=True)  # 'append' is removed in pandas >= 2.0, use pd.concat instead
         
-        numeric_cols = self.data.select_dtypes(include=[np.int, np.float]).columns
+        numeric_cols = self.data.select_dtypes(include=['int', 'float']).columns  # include=[int, float] and include=[int, float] are deprecated, use string dtype names
         
-        self.data['processed_score'] = self.data['score'].astype(np.float64)
+        self.data['processed_score'] = self.data['score'].astype(include=[int, float]64)
         
         return self.data
     
@@ -41,9 +41,9 @@ class DataProcessor:
         
     def run_tests(self):
         """Run tests using deprecated testing module"""
-        from sklearn.utils.testing import assert_array_equal
+        from numpy.testing import assert_array_equal  # Use numpy's test utility instead
         
-        test_array = np.array([1, 2, 3], dtype=np.int) 
-        expected = np.array([1, 2, 3], dtype=np.int64)
+        test_array = np.array([1, 2, 3], dtype=include=[int, float]) 
+        expected = np.array([1, 2, 3], dtype=include=[int, float]64)
         
         assert_array_equal(test_array, expected)
