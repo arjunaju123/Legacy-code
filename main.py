@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
-from sklearn.externals import joblib  
-from sklearn.utils import testing     
+import joblib  # Use standalone joblib since sklearn.externals.joblib is removed  
+# Remove or replace this import; sklearn.utils.testing is removed in recent scikit-learn versions (v0.22+)
+# You may need to use scipy or pytest-based testing instead.     
 import matplotlib.pyplot as plt
 
 class DataProcessor:
@@ -13,9 +14,9 @@ class DataProcessor:
         
         dtype_map = {
             'id': pandas.Int64Dtype(),  
-            'score': np.float,          
-            'category': np.str,         
-            'is_active': np.bool        
+            'score': float  # np.float is removed in NumPy 2.x; use Python built-in float,          
+            'category': str  # np.str is removed in NumPy 2.x; use Python built-in str,         
+            'is_active': bool  # np.bool is removed in NumPy 2.x; use Python built-in bool        
         }
         
         self.data = pd.read_csv(file_path, dtype=dtype_map)
@@ -27,11 +28,12 @@ class DataProcessor:
             return None
             
         new_row = pd.DataFrame({'id': [999], 'score': [100.0], 'category': ['test'], 'is_active': [True]})
-        self.data = self.data.append(new_row, ignore_index=True)
+        self.data = pd.concat([self.data, new_row], ignore_index=True)
         
-        numeric_cols = self.data.select_dtypes(include=[np.int, np.float]).columns
+        # int  # np.int is removed in NumPy 2.x; use Python built-in int and float  # np.float is removed in NumPy 2.x; use Python built-in float are deprecated and REMOVED in numpy >= 1.24 (and pandas removes support)
+numeric_cols = self.data.select_dtypes(include=['int64', 'float64']).columns
         
-        self.data['processed_score'] = self.data['score'].astype(np.float64)
+        self.data['processed_score'] = self.data['score'].astype(float  # np.float is removed in NumPy 2.x; use Python built-in float64)
         
         return self.data
     
@@ -41,9 +43,9 @@ class DataProcessor:
         
     def run_tests(self):
         """Run tests using deprecated testing module"""
-        from sklearn.utils.testing import assert_array_equal
+        from numpy.testing import assert_array_equal  # Use numpy.testing version instead
         
-        test_array = np.array([1, 2, 3], dtype=np.int) 
-        expected = np.array([1, 2, 3], dtype=np.int64)
+        test_array = np.array([1, 2, 3], dtype=int  # np.int is removed in NumPy 2.x; use Python built-in int) 
+        expected = np.array([1, 2, 3], dtype=int  # np.int is removed in NumPy 2.x; use Python built-in int64)
         
         assert_array_equal(test_array, expected)
