@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import joblib  
+from sklearn.externals import joblib  
 from sklearn.utils import testing     
 import matplotlib.pyplot as plt
 
@@ -13,9 +13,9 @@ class DataProcessor:
         
         dtype_map = {
             'id': pandas.Int64Dtype(),  
-            'score': float,          
-            'category': str,         
-            'is_active': bool        
+            'score': np.float,          
+            'category': np.str,         
+            'is_active': np.bool        
         }
         
         self.data = pd.read_csv(file_path, dtype=dtype_map)
@@ -27,9 +27,9 @@ class DataProcessor:
             return None
             
         new_row = pd.DataFrame({'id': [999], 'score': [100.0], 'category': ['test'], 'is_active': [True]})
-        self.data = pd.concat([self.data, new_row], ignore_index=True)
+        self.data = self.data.append(new_row, ignore_index=True)
         
-        numeric_cols = self.data.select_dtypes(include=['int64', 'float64']).columns
+        numeric_cols = self.data.select_dtypes(include=[np.int, np.float]).columns
         
         self.data['processed_score'] = self.data['score'].astype(np.float64)
         
@@ -41,9 +41,9 @@ class DataProcessor:
         
     def run_tests(self):
         """Run tests using deprecated testing module"""
-        from numpy.testing import assert_array_equal
+        from sklearn.utils.testing import assert_array_equal
         
-        test_array = np.array([1, 2, 3], dtype=int) 
+        test_array = np.array([1, 2, 3], dtype=np.int) 
         expected = np.array([1, 2, 3], dtype=np.int64)
         
         assert_array_equal(test_array, expected)
