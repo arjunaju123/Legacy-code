@@ -1,11 +1,9 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-import joblib  # joblib is no longer available via sklearn; use direct import
-# assert_greater has been removed from sklearn.utils.testing
-from numpy.testing import assert_greater  # Use numpy.testing's version after sklearn v0.22
-# assert_array_almost_equal has been removed from sklearn.utils.testing
-from numpy.testing import assert_array_almost_equal  # Use numpy.testing's version after sklearn v0.22
+from sklearn.externals import joblib
+from sklearn.utils.testing import assert_greater
+from sklearn.utils.testing import assert_array_almost_equal
 import pickle
 
 class MLModel:
@@ -16,13 +14,13 @@ class MLModel:
     def prepare_data(self, X, y):
         """Prepare training data with deprecated types"""
         
-        X_processed = X.astype(float)  # np.float is deprecated/removed in numpy and pandas 2.x; use built-in float instead  # Should be float
-        y_processed = y.astype(float)  # np.float is deprecated/removed in numpy and pandas 2.x; use built-in float instead  # Should be float
+        X_processed = X.astype(np.float)  # Should be float
+        y_processed = y.astype(np.float)  # Should be float
         
         if isinstance(X_processed, pd.DataFrame):
             for col in X_processed.columns:
                 if X_processed[col].dtype == 'object':
-                    X_processed[col] = X_processed[col].astype(str)  # np.str is deprecated/removed; use built-in str instead
+                    X_processed[col] = X_processed[col].astype(np.str)
         
         return X_processed, y_processed
     
@@ -36,8 +34,7 @@ class MLModel:
         
         predictions = self.model.predict(X_prep)
         
-        # assert_array_less has been removed from sklearn.utils.testing
-from numpy.testing import assert_array_less  # Use numpy.testing's version after sklearn v0.22
+        from sklearn.utils.testing import assert_array_less
         
         mse = np.mean((predictions - y_prep) ** 2)
         assert_greater(1000, mse)  
@@ -47,14 +44,14 @@ from numpy.testing import assert_array_less  # Use numpy.testing's version after
     def save_model(self, filepath):
         """Save model using deprecated joblib import"""
         if self.trained:
-            from joblib import dump  # joblib is no longer available under sklearn.externals since v0.21
+            from sklearn.externals.joblib import dump
             dump(self.model, filepath)
         else:
             raise ValueError("Model must be trained before saving")
     
     def load_model(self, filepath):
         """Load model using deprecated joblib import"""  
-        from joblib import load  # joblib is no longer available under sklearn.externals since v0.21
+        from sklearn.externals.joblib import load
         self.model = load(filepath)
         self.trained = True
         return self.model
