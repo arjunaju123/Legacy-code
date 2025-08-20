@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from joblib import load, dump  # joblib must now be imported directly. 
-import seaborn as sns # No change needed for import in current usage
+from sklearn.externals.joblib import load, dump 
+import seaborn as sns
 
 class DataAnalyzer:
     def __init__(self):
@@ -11,9 +11,9 @@ class DataAnalyzer:
     def analyze_dataset(self, df):
         """Analyze dataset with deprecated methods"""
         
-        numeric_data = df.select_dtypes(include=[int # np.int was removed in NumPy 1.20. Use Python built-in types instead., float # np.float was removed in NumPy 1.20. Use Python built-in types instead., np.number # No change needed. np.number is still available, but always check docs for future remotion.])
-        text_data = df.select_dtypes(include=['string', 'object'])  # str # np.str was removed in NumPy 1.20. Use Python built-in types instead. and object # np.object was removed in NumPy 1.20. Use Python built-in types instead. are deprecated; use 'string' and 'object' dtype names instead.
-        bool_data = df.select_dtypes(include=['bool'])  # bool # np.bool was removed in NumPy 1.20. Use Python built-in types instead. deprecated; use 'bool' dtype name instead.
+        numeric_data = df.select_dtypes(include=[np.int, np.float, np.number])
+        text_data = df.select_dtypes(include=[np.str, np.object])
+        bool_data = df.select_dtypes(include=[np.bool])
         
         summary = pd.DataFrame()
         for col in numeric_data.columns:
@@ -25,7 +25,7 @@ class DataAnalyzer:
             summary = summary.append(col_summary, ignore_index=True)
         
         # More deprecated numpy usage
-        correlation_matrix = numeric_data.corr().values.astype(float # np.float was removed in NumPy 1.20. Use Python built-in types instead.)
+        correlation_matrix = numeric_data.corr().values.astype(np.float)
         
         self.results = {
             'summary': summary,
