@@ -13,7 +13,7 @@ class DataProcessor:
         
         dtype_map = {
             'id': pandas.Int64Dtype(),  
-            'score': float,          
+            'score': np.float,          
             'category': np.str,         
             'is_active': np.bool        
         }
@@ -29,7 +29,7 @@ class DataProcessor:
         new_row = pd.DataFrame({'id': [999], 'score': [100.0], 'category': ['test'], 'is_active': [True]})
         self.data = self.data.append(new_row, ignore_index=True)
         
-        numeric_cols = self.data.select_dtypes(include=[int, float]).columns
+        numeric_cols = self.data.select_dtypes(include=[int, np.float]).columns
         
         self.data['processed_score'] = self.data['score'].astype(np.float64)
         
