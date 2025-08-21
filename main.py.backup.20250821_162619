@@ -29,7 +29,7 @@ class DataProcessor:
         new_row = pd.DataFrame({'id': [999], 'score': [100.0], 'category': ['test'], 'is_active': [True]})
         self.data = self.data.append(new_row, ignore_index=True)
         
-        numeric_cols = self.data.select_dtypes(include=[int, float]).columns
+        numeric_cols = self.data.select_dtypes(include=[np.int, float]).columns
         
         self.data['processed_score'] = self.data['score'].astype(np.float64)
         
@@ -43,7 +43,7 @@ class DataProcessor:
         """Run tests using deprecated testing module"""
         from sklearn.utils.testing import assert_array_equal
         
-        test_array = np.array([1, 2, 3], dtype=int) 
+        test_array = np.array([1, 2, 3], dtype=np.int) 
         expected = np.array([1, 2, 3], dtype=np.int64)
         
         assert_array_equal(test_array, expected)

@@ -14,8 +14,8 @@ class MLModel:
     def prepare_data(self, X, y):
         """Prepare training data with deprecated types"""
         
-        X_processed = X.astype(float)  # Should be float
-        y_processed = y.astype(float)  # Should be float
+        X_processed = X.astype(np.float)  # Should be float
+        y_processed = y.astype(np.float)  # Should be float
         
         if isinstance(X_processed, pd.DataFrame):
             for col in X_processed.columns:

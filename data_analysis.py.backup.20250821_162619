@@ -11,7 +11,7 @@ class DataAnalyzer:
     def analyze_dataset(self, df):
         """Analyze dataset with deprecated methods"""
         
-        numeric_data = df.select_dtypes(include=[int, float, numbers.Number])
+        numeric_data = df.select_dtypes(include=[int, float, np.number])
         text_data = df.select_dtypes(include=[np.str, np.object])
         bool_data = df.select_dtypes(include=[np.bool])
         
